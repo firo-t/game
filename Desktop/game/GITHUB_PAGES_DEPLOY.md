@@ -1,0 +1,200 @@
+# GitHub Pages Deployment Guide
+
+Your React portfolio is now configured for GitHub Pages deployment. Follow these steps to publish your site.
+
+## Step 1: Update Homepage URL in package.json
+
+Before deploying, update the `homepage` field with your actual GitHub username:
+
+```json
+"homepage": "https://YOUR_GITHUB_USERNAME.github.io/game"
+```
+
+**Replace `YOUR_GITHUB_USERNAME`** with your actual GitHub username (e.g., `https://john-doe.github.io/game`).
+
+## Step 2: Initialize Git Repository
+
+If you haven't already, initialize a git repository in your project:
+
+```bash
+cd c:\Users\hp\Desktop\game
+git init
+git config user.name "Your Name"
+git config user.email "your-email@example.com"
+```
+
+## Step 3: Create GitHub Repository
+
+1. Go to [github.com/new](https://github.com/new)
+2. Create a repository named exactly: **`game`** (must match folder name)
+3. Do NOT initialize with README, .gitignore, or license
+4. Click "Create repository"
+5. Copy the repository URL (e.g., `https://github.com/YOUR_USERNAME/game.git`)
+
+## Step 4: Connect Local Project to GitHub
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/game.git
+git branch -M main
+```
+
+Replace `YOUR_USERNAME` with your GitHub username.
+
+## Step 5: Stage and Commit Code
+
+```bash
+git add .
+git commit -m "Initial portfolio commit"
+```
+
+## Step 6: Deploy to GitHub Pages
+
+Run the deployment command:
+
+```bash
+npm run deploy
+```
+
+This will:
+1. Build your React app (`npm run build`)
+2. Deploy the `build/` folder to the `gh-pages` branch
+3. Create the `gh-pages` branch automatically if it doesn't exist
+
+Output should show:
+```
+Published to https://github.com/YOUR_USERNAME/game/tree/gh-pages
+```
+
+## Step 7: Enable GitHub Pages Settings
+
+1. Go to your repository: `https://github.com/YOUR_USERNAME/game`
+2. Click **Settings** (gear icon)
+3. Scroll to **Pages** section
+4. Under "Build and deployment":
+   - **Source**: Select "Deploy from a branch"
+   - **Branch**: Select `gh-pages` and `/root` folder
+5. Click **Save**
+6. Wait 1-2 minutes for deployment
+
+## Step 8: Verify Deployment
+
+Your portfolio will be live at:
+```
+https://YOUR_USERNAME.github.io/game
+```
+
+Visit this URL after 2-3 minutes. If you see your portfolio, deployment succeeded!
+
+## Troubleshooting 404 Errors
+
+### Problem: Website shows 404 after deployment
+
+**Cause 1**: `homepage` URL in package.json is incorrect
+- **Fix**: Verify it matches `https://YOUR_USERNAME.github.io/game` exactly
+- Re-run: `npm run deploy`
+
+**Cause 2**: `gh-pages` branch not in GitHub Pages settings
+- **Fix**: Go to Settings > Pages and ensure `gh-pages` branch is selected
+
+**Cause 3**: Capitalization mismatch in GitHub username
+- **Fix**: GitHub usernames are case-insensitive in URLs but must be consistent
+- Update `homepage` to match your exact username
+
+### Problem: Page loads but styling is broken
+
+**Cause**: CSS file paths are relative but not adjusted for subfolder
+- **This is already fixed in your project** by the `homepage` field
+- React Router automatically adjusts paths based on the `homepage` setting
+
+### Problem: Blank page or "Loading..." stuck
+
+**Cause**: JavaScript bundle failed to load
+- **Fix**: Check browser DevTools (F12) > Console for errors
+- Ensure all JavaScript imports are relative paths
+- Rebuild: `npm run build` then `npm run deploy`
+
+## Complete Deployment Sequence
+
+```bash
+# 1. Update package.json homepage URL manually
+
+# 2. From project directory:
+cd c:\Users\hp\Desktop\game
+
+# 3. Initialize git (if not done):
+git init
+
+# 4. Add GitHub as remote (if not done):
+git remote add origin https://github.com/YOUR_USERNAME/game.git
+
+# 5. Stage and commit:
+git add .
+git commit -m "Initial portfolio"
+
+# 6. Deploy to GitHub Pages:
+npm run deploy
+
+# 7. Push main branch to GitHub:
+git push -u origin main
+
+# 8. Visit: https://YOUR_USERNAME.github.io/game
+```
+
+## What Gets Deployed
+
+✓ `build/` folder (React compiled output)
+✓ All JavaScript, CSS, images bundled into `build/`
+✓ `public/index.html` (entry point)
+
+✗ `node_modules/` (excluded via .gitignore)
+✗ `src/` folder (only deployed as compiled code)
+✗ Development files
+
+## Redeploying After Changes
+
+Every time you make changes to your portfolio:
+
+```bash
+git add .
+git commit -m "Description of changes"
+npm run deploy
+git push origin main
+```
+
+Changes will appear on GitHub Pages within 1-2 minutes.
+
+## Available npm Commands
+
+```bash
+npm start          # Run development server (http://localhost:3000)
+npm run build      # Create production build
+npm run deploy     # Deploy to GitHub Pages
+npm test           # Run tests
+npm run eject      # (Don't use - permanent)
+```
+
+## Project Structure (Correct)
+
+```
+game/
+├── public/
+│   └── index.html              ✓ React HTML template
+├── src/
+│   ├── App.jsx                 ✓ Main portfolio component
+│   ├── index.js                ✓ React entry point
+│   └── globals.css             ✓ Global styles with Tailwind
+├── build/                      (Generated by npm run build)
+├── node_modules/               (Generated by npm install)
+├── package.json                ✓ (Updated for GitHub Pages)
+├── tailwind.config.js          ✓
+├── postcss.config.js           ✓
+└── .gitignore                  ✓
+```
+
+## Support
+
+If deployment still fails:
+1. Check GitHub Pages Settings > Build logs
+2. Run `npm run build` locally to verify it compiles
+3. Verify `homepage` URL is exactly correct (no trailing slash)
+4. Clear browser cache (Ctrl+Shift+Delete) and retry
