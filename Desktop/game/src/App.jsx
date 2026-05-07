@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const heroSkills = ['Structural Analysis', 'BIM Modeling', 'CAD Design', 'Project Management'];
 
 // ==================== LOADING SCREEN ====================
 const LoadingScreen = ({ onComplete }) => {
@@ -117,11 +119,10 @@ const MouseGlow = () => {
 // ==================== HERO SECTION ====================
 const HeroSection = () => {
     const [displayText, setDisplayText] = useState('');
-    const skills = ['Structural Analysis', 'BIM Modeling', 'CAD Design', 'Project Management'];
     const [skillIndex, setSkillIndex] = useState(0);
 
     useEffect(() => {
-        const skill = skills[skillIndex];
+        const skill = heroSkills[skillIndex];
         let index = 0;
         const interval = setInterval(() => {
             if (index <= skill.length) {
@@ -130,7 +131,7 @@ const HeroSection = () => {
             } else {
                 clearInterval(interval);
                 setTimeout(() => {
-                    setSkillIndex((prev) => (prev + 1) % skills.length);
+                    setSkillIndex((prev) => (prev + 1) % heroSkills.length);
                     setDisplayText('');
                 }, 2000);
             }
